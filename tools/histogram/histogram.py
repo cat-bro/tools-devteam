@@ -7,14 +7,6 @@ from rpy2.robjects import r, vectors
 from rpy2.robjects.packages import importr
 
 
-assert sys.version_info[:2] >= (2, 4)
-
-
-def stop_err(msg):
-    sys.stderr.write(msg)
-    sys.exit()
-
-
 def main():
     # Handle input params
     in_fname = sys.argv[1]
@@ -22,7 +14,7 @@ def main():
     try:
         column = int(sys.argv[3]) - 1
     except Exception:
-        stop_err("Column not specified, your query does not contain a column of numerical data.")
+        sys.exit("Column not specified, your query does not contain a column of numerical data.")
     title = sys.argv[4]
     xlab = sys.argv[5]
     breaks = int(sys.argv[6])
@@ -92,12 +84,12 @@ def main():
                 graphics.lines(density)
             grdevices.dev_off()
         except Exception as exc:
-            stop_err("%s" % str(exc))
+            sys.exit("%s" % str(exc))
     else:
         if i == 0:
-            stop_err("Input dataset is empty.")
+            sys.exit("Input dataset is empty.")
         else:
-            stop_err("All values in column %s are non-numeric." % sys.argv[3])
+            sys.exit("All values in column %s are non-numeric." % sys.argv[3])
 
     print("Histogram of column %s. " % sys.argv[3])
     if skipped_lines > 0:
